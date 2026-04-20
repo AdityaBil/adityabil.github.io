@@ -1021,6 +1021,200 @@
       padding: clamp(12px, 3vw, 16px) clamp(12px, 4vw, 16px);
     }
   }
+
+
+  /* ============ OMNITRIX ELEMENT ============ */
+/* ============ OMNITRIX ELEMENT ============ */
+  .hero-top-inner {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: clamp(20px, 4vw, 40px);
+  }
+
+  .hero-top-left { flex: 1; }
+
+  .omnitrix-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: clamp(160px, 22vw, 280px);
+    height: clamp(160px, 22vw, 280px);
+    margin-top: clamp(60px, 12vw, 100px);
+    position: relative;
+    cursor: pointer;
+  }
+
+  /* The idle floating omnitrix icon */
+  .omnitrix-idle {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    filter: drop-shadow(0 0 16px rgba(74,220,74,0.55));
+    transition: filter 0.3s, opacity 0.4s;
+    animation: omnitrixFloat 3.5s ease-in-out infinite;
+  }
+
+  @keyframes omnitrixFloat {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-10px); }
+  }
+
+  .omnitrix-area:hover .omnitrix-idle {
+    filter: drop-shadow(0 0 28px rgba(74,255,74,0.9))
+            drop-shadow(0 0 8px rgba(140,255,100,0.6));
+  }
+
+  .omnitrix-hint {
+    position: absolute;
+    bottom: -26px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(74,255,100,0.55);
+    white-space: nowrap;
+    font-family: 'Space Grotesk', sans-serif;
+    animation: hintPulse 2.5s ease-in-out infinite;
+  }
+  @keyframes hintPulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
+
+  /* ── CONTAINED TRANSFORMATION BOX ── */
+  .omni-box {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* Green radial flash fills the circle */
+  .omni-box-flash {
+    position: absolute;
+    inset: -20%;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff 0%, #bbff44 25%, #44ff88 55%, #003300 100%);
+    opacity: 0;
+    transition: opacity 0.06s;
+  }
+
+  /* Lightning canvas inside the box */
+  .omni-box-lightning {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+  }
+
+  /* Final state: Image-2 style — concentric rings + diamond + silhouette */
+  .omni-box-final {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse 120% 120% at 50% 40%,
+      #1a5c1a 0%, #0d3d0d 50%, #050f05 100%);
+  }
+
+  /* Outer decorative rings */
+  .omni-final-rings {
+    position: absolute;
+    inset: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* 4 orb nodes at compass positions */
+  .omni-final-orb {
+    position: absolute;
+    width: 14%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, #ffffaa 0%, #ccff44 40%, #44bb44 70%, #224422 100%);
+    box-shadow: 0 0 8px #88ff44, 0 0 20px #44ff44;
+    border: 2px solid rgba(180,255,100,0.5);
+  }
+  .omni-final-orb::before {
+    content: '';
+    position: absolute;
+    inset: 20%;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff 0%, #eeff88 60%, transparent 100%);
+  }
+  .omni-orb-n { top: 2%;    left: 50%; transform: translateX(-50%); }
+  .omni-orb-s { bottom: 2%; left: 50%; transform: translateX(-50%); }
+  .omni-orb-w { left: 2%;   top: 50%;  transform: translateY(-50%); }
+  .omni-orb-e { right: 2%;  top: 50%;  transform: translateY(-50%); }
+
+  /* Central yellow diamond */
+  .omni-final-diamond {
+    position: absolute;
+    width: 62%;
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, #d4ff00 0%, #aaff22 30%, #eeff88 55%, #88cc00 100%);
+    transform: rotate(45deg);
+    box-shadow: 0 0 30px rgba(180,255,0,0.6), inset 0 0 20px rgba(255,255,200,0.3);
+  }
+
+  /* Shine stripes on diamond */
+  .omni-final-diamond::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent 0%,
+      rgba(255,255,255,0.15) 10%,
+      transparent 20%
+    );
+    border-radius: 2px;
+  }
+
+  /* Human silhouette standing inside diamond */
+  .omni-final-figure {
+    position: absolute;
+    width: 38%;
+    height: 68%;
+    z-index: 3;
+    display: flex; align-items: center; justify-content: center;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Labels */
+  .omni-final-label {
+    position: absolute;
+    font-family: 'Space Grotesk', monospace;
+    font-size: clamp(0.35rem, 0.9vw, 0.55rem);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #66ff88;
+    background: rgba(0,10,0,0.75);
+    border: 1px solid rgba(80,200,80,0.45);
+    padding: 2px 6px;
+    white-space: nowrap;
+    z-index: 5;
+  }
+  .omni-lbl-top    { top: 22%;    left: 50%; transform: translateX(-50%); }
+  .omni-lbl-bottom { bottom: 20%; left: 50%; transform: translateX(-50%); }
+
+  /* Lightning animation keyframes */
+  @keyframes lightFlicker {
+    0%,100%{opacity:0.9} 20%{opacity:0.3} 50%{opacity:1} 70%{opacity:0.4}
+  }
+  @keyframes ringRotate    { from{transform:rotate(0deg)}  to{transform:rotate(360deg)}  }
+  @keyframes ringRotateRev { from{transform:rotate(0deg)}  to{transform:rotate(-360deg)} }
+
+  /* MOBILE: hide omnitrix on very small screens */
+  @media (max-width: 600px) {
+    .omnitrix-area  { display: none; }
+    .hero-top-inner { display: block; }
+  }
 </style>
 </head>
 <body>
@@ -1057,19 +1251,129 @@
     <canvas class="wireframe-canvas" id="wireframeCanvas"></canvas>
   </div>
 
-  <div class="hero-top">
-    <div class="hero-title">MACHINE<br>LEARNING<br>ENGINEER</div>
 
-    <div class="hero-subtitle-row">
-      <p class="hero-sub">
-        Currently pursuing B.Tech in Computer Science at Birla Institute of Technology, Jaipur — building intelligent systems at the intersection of AI, Finance & Language.
-      </p>
-      <p class="hero-sub">
-        Specializing in Financial ML, Deep Learning & LLMs. I transform complex datasets into scalable, end-to-end predictive solutions that actually work.
-      </p>
-      <a href="#contact" class="cta-link">Get in touch →</a>
-    </div>
-  </div>
+
+  <div class="hero-top">
+    <div class="hero-top-inner">
+
+      <!-- Left column: existing title + subtitle -->
+      <div class="hero-top-left">
+        <div class="hero-title">MACHINE<br>LEARNING<br>ENGINEER</div>
+
+        <div class="hero-subtitle-row">
+          <p class="hero-sub">
+            Currently pursuing B.Tech in Computer Science at Birla Institute of Technology,
+            Jaipur — building intelligent systems at the intersection of AI, Finance &amp; Language.
+          </p>
+          <p class="hero-sub">
+            Specializing in Financial ML, Deep Learning &amp; LLMs. I transform complex
+            datasets into scalable, end-to-end predictive solutions that actually work.
+          </p>
+          <a href="#contact" class="cta-link">Get in touch →</a>
+        </div>
+      </div>
+
+      <!-- OMNITRIX SIGNATURE ELEMENT -->
+      <div class="omnitrix-area" id="omnitrixBtn" title="Click to transform">
+
+        <!-- IDLE FLOATING ICON — pixel-perfect Omnitrix -->
+        <svg class="omnitrix-idle" id="omnitrixIdle" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="hgGrad" cx="50%" cy="50%" r="55%"
+              gradientUnits="userSpaceOnUse" fx="250" fy="250">
+              <stop offset="0%"   stop-color="#d4ff44"/>
+              <stop offset="40%"  stop-color="#8bdc2c"/>
+              <stop offset="100%" stop-color="#4a9a10"/>
+            </radialGradient>
+            <clipPath id="innerDisc">
+              <circle cx="250" cy="250" r="165"/>
+            </clipPath>
+          </defs>
+
+          <!-- Black background -->
+          <circle cx="250" cy="250" r="250" fill="#000"/>
+
+          <!-- GREY RING with gap cuts every 45° -->
+          <circle cx="250" cy="250" r="210" fill="none" stroke="#6b7585" stroke-width="56"/>
+          <line x1="250" y1="181" x2="250" y2="239" stroke="#000" stroke-width="20" transform="rotate(  0 250 250)"/>
+          <line x1="250" y1="181" x2="250" y2="239" stroke="#000" stroke-width="20" transform="rotate( 45 250 250)"/>
+          <line x1="250" y1="181" x2="250" y2="239" stroke="#000" stroke-width="20" transform="rotate( 90 250 250)"/>
+          <line x1="250" y1="181" x2="250" y2="239" stroke="#000" stroke-width="20" transform="rotate(135 250 250)"/>
+          <line x1="250" y1="181" x2="250" y2="239" stroke="#000" stroke-width="20" transform="rotate(180 250 250)"/>
+          <line x1="250" y1="181" x2="250" y2="239" stroke="#000" stroke-width="20" transform="rotate(225 250 250)"/>
+          <line x1="250" y1="181" x2="250" y2="239" stroke="#000" stroke-width="20" transform="rotate(270 250 250)"/>
+          <line x1="250" y1="181" x2="250" y2="239" stroke="#000" stroke-width="20" transform="rotate(315 250 250)"/>
+
+          <!-- GREEN ARC HIGHLIGHTS — 4 alternating segments -->
+          <circle cx="250" cy="250" r="240" fill="none" stroke="#44d044" stroke-width="10"
+            stroke-dasharray="160 1098" stroke-dashoffset="-10" stroke-linecap="round"/>
+          <circle cx="250" cy="250" r="240" fill="none" stroke="#44d044" stroke-width="10"
+            stroke-dasharray="160 1098" stroke-dashoffset="-10" stroke-linecap="round"
+            transform="rotate( 90 250 250)"/>
+          <circle cx="250" cy="250" r="240" fill="none" stroke="#44d044" stroke-width="10"
+            stroke-dasharray="160 1098" stroke-dashoffset="-10" stroke-linecap="round"
+            transform="rotate(180 250 250)"/>
+          <circle cx="250" cy="250" r="240" fill="none" stroke="#44d044" stroke-width="10"
+            stroke-dasharray="160 1098" stroke-dashoffset="-10" stroke-linecap="round"
+            transform="rotate(270 250 250)"/>
+
+          <!-- INNER BLACK DISC -->
+          <circle cx="250" cy="250" r="182" fill="#000"/>
+
+          <!-- HOURGLASS — clean pinched waist, no separator bar -->
+          <g clip-path="url(#innerDisc)">
+            <path d="M 250,88 C 318,88 400,116 408,152 L 258,246 Q 250,250 242,246 L 92,152 C 100,116 182,88 250,88 Z"
+              fill="url(#hgGrad)"/>
+            <path d="M 250,412 C 318,412 400,384 408,348 L 258,254 Q 250,250 242,254 L 92,348 C 100,384 182,412 250,412 Z"
+              fill="url(#hgGrad)"/>
+          </g>
+
+          <!-- Animated glow pulse -->
+          <circle cx="250" cy="250" r="185" fill="none" stroke="#44ff44" stroke-width="2" opacity="0">
+            <animate attributeName="opacity" values="0;0.5;0"   dur="2.4s" repeatCount="indefinite"/>
+            <animate attributeName="r"       values="185;196;185" dur="2.4s" repeatCount="indefinite"/>
+          </circle>
+        </svg>
+
+        <!-- CONTAINED TRANSFORMATION BOX (sits over the idle icon) -->
+        <div class="omni-box" id="omniBox">
+          <div class="omni-box-flash" id="omniFlash"></div>
+          <canvas class="omni-box-lightning" id="omniLightCanvas"></canvas>
+
+          <!-- FINAL STATE: WELCOME -->
+          <div class="omni-box-final" id="omniFinalBox">
+            <!-- Subtle concentric rings backdrop -->
+            <svg style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 200 200">
+              <circle cx="100" cy="100" r="95" fill="none" stroke="rgba(74,255,100,0.18)" stroke-width="1.5"/>
+              <circle cx="100" cy="100" r="78" fill="none" stroke="rgba(74,255,100,0.12)" stroke-width="1"/>
+            </svg>
+            <!-- WELCOME text -->
+            <div style="
+              position: absolute;
+              inset: 0;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-family: 'Bebas Neue', sans-serif;
+              font-size: clamp(1.6rem, 4.5vw, 2.8rem);
+              font-weight: 900;
+              color: #000;
+              letter-spacing: 3px;
+              text-align: center;
+              z-index: 5;
+              line-height: 1;
+            ">WELCOME</div>
+          </div>
+        </div>
+
+        <div class="omnitrix-hint" id="omniHint">[ tap to transform ]</div>
+      </div><!-- end .omnitrix-area -->
+
+    </div><!-- end .hero-top-inner -->
+  </div><!-- end .hero-top -->
+
+
+
 
   <!-- HERO BOTTOM WITH PHOTO + STICKERS -->
   <div class="hero-bottom">
@@ -1466,7 +1770,7 @@
       <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent-green);"></div>
       <div style="font-size:0.7rem;letter-spacing:4px;text-transform:uppercase;color:var(--accent-green);margin-bottom:16px;font-weight:600;">🤖 Building AI</div>
       <h3 style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;margin-bottom:16px;">Obsessed with Machines That Think</h3>
-      <p style="font-size:0.85rem;color:rgba(240,236,228,0.55);line-height:1.7;">Late-night model training, reading papers at 2am, and chasing that one extra percentage point of accuracy. The craft of making machines understand the world is never finished.</p>
+      <p style="font-size:0.85rem;color:rgba(240,236,228,0.55);line-height:1.7;">I explore intelligence through mathematics and intuition — visualizing learning curves, understanding optimization landscapes, and crafting models that transform data into insight. For me, AI is not just engineering; it is understanding how machines learn to perceive the world.</p>
     </div>
 
     <!-- OPEN SOURCE card -->
@@ -1474,7 +1778,7 @@
       <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent-pink);"></div>
       <div style="font-size:0.7rem;letter-spacing:4px;text-transform:uppercase;color:var(--accent-pink);margin-bottom:16px;font-weight:600;">🌐 Community & OSS</div>
       <h3 style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;margin-bottom:16px;">Giving Back to the Code</h3>
-      <p style="font-size:0.85rem;color:rgba(240,236,228,0.55);line-height:1.7;">Contributing to open source, sharing knowledge through Google Developer's Group, and believing that the best technology is built together — not alone.</p>
+      <p style="font-size:0.85rem;color:rgba(240,236,228,0.55);line-height:1.7;">I believe technology grows through shared knowledge. Contributing to open ecosystems, exchanging ideas with developers, and building in public allows innovation to compound beyond individuals into communities.</p>
     </div>
 
   </div>
@@ -1505,6 +1809,157 @@
   <p>© 2026 Aditya Bilgaiyan</p>
   <p>Jaipur, Rajasthan · India</p>
 </footer>
+
+<script>
+  // ============ OMNITRIX CONTAINED TRANSFORMATION ============
+  const omnitrixBtn  = document.getElementById('omnitrixBtn');
+  const omnitrixIdle = document.getElementById('omnitrixIdle');
+  const omniBox      = document.getElementById('omniBox');
+  const omniFlash    = document.getElementById('omniFlash');
+  const lightCanvas  = document.getElementById('omniLightCanvas');
+  const omniFinalBox = document.getElementById('omniFinalBox');
+  const omniHint     = document.getElementById('omniHint');
+
+  let transformed = false;
+  let lightAnim   = null;
+  let lctx        = null;
+
+  // Size the lightning canvas to match the box
+  function sizeCanvas() {
+    if (!lightCanvas) return;
+    lightCanvas.width  = omniBox.offsetWidth  || 240;
+    lightCanvas.height = omniBox.offsetHeight || 240;
+    lctx = lightCanvas.getContext('2d');
+  }
+
+  // Draw a jagged lightning bolt between two points
+  function drawBolt(ctx, x1, y1, x2, y2, roughness) {
+    const dx = x2 - x1, dy = y2 - y1;
+    const len = Math.sqrt(dx * dx + dy * dy);
+    const segs = Math.max(4, Math.floor(len / 14));
+    const pts = [[x1, y1]];
+    for (let i = 1; i < segs; i++) {
+      const t = i / segs;
+      const mx = x1 + dx * t + (Math.random() - 0.5) * roughness;
+      const my = y1 + dy * t + (Math.random() - 0.5) * roughness;
+      pts.push([mx, my]);
+    }
+    pts.push([x2, y2]);
+    ctx.beginPath();
+    ctx.moveTo(pts[0][0], pts[0][1]);
+    for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
+    ctx.stroke();
+  }
+
+  function drawLightning() {
+    if (!lctx) return;
+    const w = lightCanvas.width, h = lightCanvas.height;
+    const cx = w / 2, cy = h / 2;
+    lctx.clearRect(0, 0, w, h);
+
+    // Randomise which bolts fire each frame (flicker effect)
+    if (Math.random() < 0.35) return;
+
+    // Outer glow pass
+    lctx.shadowBlur  = 12;
+    lctx.shadowColor = '#44ff88';
+    lctx.strokeStyle = 'rgba(100,255,120,0.45)';
+    lctx.lineWidth   = 3;
+    const angles = [30, 80, 150, 210, 280, 340];
+    angles.forEach(deg => {
+      if (Math.random() < 0.5) return;
+      const rad = deg * Math.PI / 180;
+      const ex  = cx + Math.cos(rad) * w * 0.52;
+      const ey  = cy + Math.sin(rad) * h * 0.52;
+      drawBolt(lctx, cx, cy, ex, ey, 22);
+    });
+
+    // Sharp core pass
+    lctx.shadowBlur  = 4;
+    lctx.strokeStyle = 'rgba(200,255,200,0.85)';
+    lctx.lineWidth   = 1;
+    angles.forEach(deg => {
+      if (Math.random() < 0.4) return;
+      const rad = deg * Math.PI / 180;
+      const ex  = cx + Math.cos(rad) * w * 0.45;
+      const ey  = cy + Math.sin(rad) * h * 0.45;
+      drawBolt(lctx, cx, cy, ex, ey, 14);
+    });
+
+    lctx.shadowBlur = 0;
+  }
+
+  function startLightning() {
+    lightCanvas.style.opacity = '1';
+    function loop() { drawLightning(); lightAnim = requestAnimationFrame(loop); }
+    loop();
+  }
+
+  function stopLightning() {
+    cancelAnimationFrame(lightAnim);
+    lightAnim = null;
+    if (lctx) lctx.clearRect(0, 0, lightCanvas.width, lightCanvas.height);
+    lightCanvas.style.opacity = '0';
+  }
+
+  function resetToIdle() {
+    transformed = false;
+    omniFlash.style.transition    = 'none';
+    omniFlash.style.opacity       = '0';
+    omniFinalBox.style.transition = 'none';
+    omniFinalBox.style.opacity    = '0';
+    stopLightning();
+    omnitrixIdle.style.opacity    = '1';
+    omniHint.style.opacity        = '1';
+    omniHint.textContent          = '[ tap to transform ]';
+  }
+
+  async function runTransformation() {
+    if (transformed) { resetToIdle(); return; }
+    transformed = true;
+    sizeCanvas();
+    omniHint.style.opacity = '0';
+
+    // ── Phase 1: Green FLASH (fast) ──
+    omniFlash.style.transition = 'opacity 0.05s';
+    omniFlash.style.opacity    = '1';
+
+    // ── Phase 2: Lightning starts immediately ──
+    startLightning();
+
+    // ── Hold flash + lightning for ~350ms ──
+    await new Promise(r => setTimeout(r, 180));
+
+    // Flash flicker
+    omniFlash.style.transition = 'opacity 0.08s';
+    omniFlash.style.opacity    = '0.3';
+    await new Promise(r => setTimeout(r, 80));
+    omniFlash.style.opacity    = '1';
+    await new Promise(r => setTimeout(r, 80));
+
+    // ── Phase 3: Flash out, idle icon fades, final appears ──
+    omniFlash.style.transition     = 'opacity 0.25s';
+    omniFlash.style.opacity        = '0';
+    omnitrixIdle.style.transition  = 'opacity 0.2s';
+    omnitrixIdle.style.opacity     = '0';
+
+    await new Promise(r => setTimeout(r, 200));
+    stopLightning();
+
+    // Show final state
+    omniFinalBox.style.transition = 'opacity 0.3s ease';
+    omniFinalBox.style.opacity    = '1';
+
+    // Update hint
+    setTimeout(() => {
+      omniHint.style.opacity    = '1';
+      omniHint.style.transition = 'opacity 0.4s';
+      omniHint.textContent      = '[ tap to revert ]';
+    }, 400);
+  }
+
+  omnitrixBtn.addEventListener('click', runTransformation);
+</script>
 
 <script>
   // WIREFRAME PARTICLE NETWORK ANIMATION
