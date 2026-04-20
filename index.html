@@ -967,6 +967,21 @@
       transform: scale(0.65) !important; 
     }
 
+    /* My Core section — single column on mobile */
+    .core-grid {
+      grid-template-columns: 1fr !important;
+      gap: clamp(16px, 4vw, 24px) !important;
+      max-width: 100% !important;
+    }
+    
+    #core {
+      padding: clamp(60px, 12vw, 100px) clamp(16px, 5vw, 24px) !important;
+    }
+    
+    .core-card {
+      padding: clamp(24px, 6vw, 40px) clamp(20px, 4vw, 32px) !important;
+    }
+
     .grid-bg {
       background-size: 40px 40px;
     }
@@ -1210,10 +1225,24 @@
   @keyframes ringRotate    { from{transform:rotate(0deg)}  to{transform:rotate(360deg)}  }
   @keyframes ringRotateRev { from{transform:rotate(0deg)}  to{transform:rotate(-360deg)} }
 
-  /* MOBILE: hide omnitrix on very small screens */
-  @media (max-width: 600px) {
-    .omnitrix-area  { display: none; }
-    .hero-top-inner { display: block; }
+  /* MOBILE: adjust omnitrix for mobile screens */
+  @media (max-width: 768px) {
+    .omnitrix-area {
+      width: clamp(120px, 18vw, 180px);
+      height: clamp(120px, 18vw, 180px);
+      margin-top: clamp(40px, 8vw, 60px);
+    }
+    .hero-top-inner {
+      flex-direction: column;
+      gap: clamp(16px, 3vw, 32px);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .omnitrix-area {
+      width: clamp(100px, 15vw, 140px);
+      height: clamp(100px, 15vw, 140px);
+    }
   }
 </style>
 </head>
@@ -1320,11 +1349,11 @@
           <!-- INNER BLACK DISC -->
           <circle cx="250" cy="250" r="182" fill="#000"/>
 
-          <!-- HOURGLASS — clean pinched waist, no separator bar -->
+          <!-- HOURGLASS — sharp bowtie waist matching reference -->
           <g clip-path="url(#innerDisc)">
-            <path d="M 250,88 C 318,88 400,116 408,152 L 258,246 Q 250,250 242,246 L 92,152 C 100,116 182,88 250,88 Z"
+            <path d="M 250,88 C 318,88 400,116 408,152 L 252,249 L 248,249 L 92,152 C 100,116 182,88 250,88 Z"
               fill="url(#hgGrad)"/>
-            <path d="M 250,412 C 318,412 400,384 408,348 L 258,254 Q 250,250 242,254 L 92,348 C 100,384 182,412 250,412 Z"
+            <path d="M 250,412 C 318,412 400,384 408,348 L 252,251 L 248,251 L 92,348 C 100,384 182,412 250,412 Z"
               fill="url(#hgGrad)"/>
           </g>
 
@@ -1736,7 +1765,7 @@
   <p class="section-label reveal">— beyond the code</p>
   <h2 class="reveal" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(64px,9vw,130px);line-height:0.88;margin-bottom:80px;">MY <span style="color:var(--accent-yellow);">CORE</span></h2>
 
-  <div class="core-grid reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:40px;max-width:1100px;">
+  <div class="core-grid reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:40px;max-width:1100px;padding:0 auto;">
 
     <!-- RAPPING CARD -->
     <div class="core-card" style="background:#141414;border:1px solid rgba(255,255,255,0.06);padding:48px 40px;position:relative;overflow:hidden;transition:transform 0.3s,background 0.3s;cursor:default;" onmouseenter="this.style.transform='translateY(-6px)';this.style.background='#1a1a1a'" onmouseleave="this.style.transform='translateY(0)';this.style.background='#141414'">
