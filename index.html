@@ -507,7 +507,7 @@
 
   .skills-grid {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 2px;
   }
 
@@ -1039,7 +1039,6 @@
 
 
   /* ============ OMNITRIX ELEMENT ============ */
-/* ============ OMNITRIX ELEMENT ============ */
   .hero-top-inner {
     display: flex;
     align-items: flex-start;
@@ -1054,48 +1053,72 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    width: clamp(160px, 22vw, 280px);
-    height: clamp(160px, 22vw, 280px);
-    margin-top: clamp(60px, 12vw, 100px);
+    width: clamp(180px, 24vw, 300px);
+    height: clamp(180px, 24vw, 300px);
+    margin-top: clamp(50px, 10vw, 90px);
     position: relative;
     cursor: pointer;
+    perspective: 1000px;
+    user-select: none;
   }
 
-  /* The idle floating omnitrix icon */
+  /* Dial Container - Handles smooth mechanical rotation & scale */
+  .omnitrix-dial {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 50%;
+    transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.5s ease;
+    filter: drop-shadow(0 0 20px rgba(57, 255, 20, 0.5));
+  }
+
+  .omnitrix-area:hover .omnitrix-dial {
+    transform: scale(1.06);
+    filter: drop-shadow(0 0 35px rgba(57, 255, 20, 0.85)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.6));
+  }
+
+  .omnitrix-area.is-transformed .omnitrix-dial {
+    transform: scale(1.12) rotate(180deg);
+    filter: drop-shadow(0 0 45px rgba(57, 255, 20, 0.95)) drop-shadow(0 0 20px rgba(180, 255, 100, 0.7));
+  }
+
+  /* Idle SVG icon */
   .omnitrix-idle {
     width: 100%;
     height: 100%;
     position: absolute;
     inset: 0;
-    filter: drop-shadow(0 0 16px rgba(74,220,74,0.55));
-    transition: filter 0.3s, opacity 0.4s;
-    animation: omnitrixFloat 3.5s ease-in-out infinite;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    animation: omnitrixFloat 4s ease-in-out infinite;
   }
 
   @keyframes omnitrixFloat {
-    0%, 100% { transform: translateY(0px); }
-    50%       { transform: translateY(-10px); }
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50%       { transform: translateY(-8px) rotate(1deg); }
   }
 
-  .omnitrix-area:hover .omnitrix-idle {
-    filter: drop-shadow(0 0 28px rgba(74,255,74,0.9))
-            drop-shadow(0 0 8px rgba(140,255,100,0.6));
+  .omnitrix-area.is-transformed .omnitrix-idle {
+    opacity: 0;
+    pointer-events: none;
   }
 
+  /* Hint text */
   .omnitrix-hint {
     position: absolute;
-    bottom: -26px;
+    bottom: -32px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 0.6rem;
+    font-size: 0.65rem;
     letter-spacing: 3px;
     text-transform: uppercase;
-    color: rgba(74,255,100,0.55);
+    color: #39ff14;
+    text-shadow: 0 0 8px rgba(57, 255, 20, 0.6);
     white-space: nowrap;
     font-family: 'Space Grotesk', sans-serif;
+    transition: all 0.4s ease;
     animation: hintPulse 2.5s ease-in-out infinite;
   }
-  @keyframes hintPulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
+  @keyframes hintPulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
 
   /* ── CONTAINED TRANSFORMATION BOX ── */
   .omni-box {
@@ -1107,123 +1130,113 @@
     z-index: 10;
   }
 
-  /* Green radial flash fills the circle */
+  /* Energy Burst Flash */
   .omni-box-flash {
     position: absolute;
     inset: -20%;
     border-radius: 50%;
-    background: radial-gradient(circle, #fff 0%, #bbff44 25%, #44ff88 55%, #003300 100%);
+    background: radial-gradient(circle, #ffffff 0%, #bbff44 25%, #39ff14 55%, #002200 100%);
     opacity: 0;
-    transition: opacity 0.06s;
+    transition: opacity 0.15s ease-out;
   }
 
-  /* Lightning canvas inside the box */
   .omni-box-lightning {
     position: absolute;
     inset: 0;
     opacity: 0;
+    transition: opacity 0.2s ease;
   }
 
-  /* Final state: Image-2 style — concentric rings + diamond + silhouette */
+  /* Transformed State: Holographic Matrix Display */
   .omni-box-final {
     position: absolute;
     inset: 0;
+    border-radius: 50%;
     opacity: 0;
-    transition: opacity 0.35s ease;
+    transform: scale(0.85) rotate(-180deg);
+    transition: opacity 0.5s ease, transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
     display: flex;
     align-items: center;
     justify-content: center;
-    background: radial-gradient(ellipse 120% 120% at 50% 40%,
-      #1a5c1a 0%, #0d3d0d 50%, #050f05 100%);
+    background: radial-gradient(circle at 50% 50%, #0c330c 0%, #041804 60%, #000800 100%);
+    border: 2px solid rgba(57, 255, 20, 0.4);
+    box-shadow: inset 0 0 35px rgba(57, 255, 20, 0.5);
+    overflow: hidden;
   }
 
-  /* Outer decorative rings */
-  .omni-final-rings {
+  .omnitrix-area.is-transformed .omni-box-final {
+    opacity: 1;
+    transform: scale(1) rotate(-180deg);
+  }
+
+  /* Hologram scanline effect */
+  .omni-scanline {
+    position: absolute;
+    left: 0; top: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, rgba(57,255,20,0.8), transparent);
+    box-shadow: 0 0 15px #39ff14;
+    animation: holoScan 2.5s ease-in-out infinite alternate;
+    z-index: 6;
+  }
+  @keyframes holoScan {
+    0% { top: 5%; opacity: 0.3; }
+    50% { opacity: 1; }
+    100% { top: 90%; opacity: 0.3; }
+  }
+
+  /* Rotating HUD grid */
+  .omni-hud-grid {
     position: absolute;
     inset: 0;
-    display: flex; align-items: center; justify-content: center;
+    animation: hudRotate 20s linear infinite;
   }
+  @keyframes hudRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-  /* 4 orb nodes at compass positions */
-  .omni-final-orb {
+  /* Hologram Alien Silhouette */
+  .omni-hologram-figure {
     position: absolute;
-    width: 14%;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    background: radial-gradient(circle, #ffffaa 0%, #ccff44 40%, #44bb44 70%, #224422 100%);
-    box-shadow: 0 0 8px #88ff44, 0 0 20px #44ff44;
-    border: 2px solid rgba(180,255,100,0.5);
-  }
-  .omni-final-orb::before {
-    content: '';
-    position: absolute;
-    inset: 20%;
-    border-radius: 50%;
-    background: radial-gradient(circle, #fff 0%, #eeff88 60%, transparent 100%);
-  }
-  .omni-orb-n { top: 2%;    left: 50%; transform: translateX(-50%); }
-  .omni-orb-s { bottom: 2%; left: 50%; transform: translateX(-50%); }
-  .omni-orb-w { left: 2%;   top: 50%;  transform: translateY(-50%); }
-  .omni-orb-e { right: 2%;  top: 50%;  transform: translateY(-50%); }
-
-  /* Central yellow diamond */
-  .omni-final-diamond {
-    position: absolute;
-    width: 62%;
-    aspect-ratio: 1;
-    background: linear-gradient(135deg, #d4ff00 0%, #aaff22 30%, #eeff88 55%, #88cc00 100%);
-    transform: rotate(45deg);
-    box-shadow: 0 0 30px rgba(180,255,0,0.6), inset 0 0 20px rgba(255,255,200,0.3);
-  }
-
-  /* Shine stripes on diamond */
-  .omni-final-diamond::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(
-      -45deg,
-      transparent 0%,
-      rgba(255,255,255,0.15) 10%,
-      transparent 20%
-    );
-    border-radius: 2px;
-  }
-
-  /* Human silhouette standing inside diamond */
-  .omni-final-figure {
-    position: absolute;
-    width: 38%;
+    width: 48%;
     height: 68%;
-    z-index: 3;
-    display: flex; align-items: center; justify-content: center;
-    top: 50%; left: 50%;
+    top: 48%; left: 50%;
     transform: translate(-50%, -50%);
+    z-index: 4;
+    opacity: 0.85;
+    filter: drop-shadow(0 0 10px #39ff14);
+    animation: figurePulse 3s ease-in-out infinite;
+  }
+  @keyframes figurePulse {
+    0%, 100% { opacity: 0.75; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.95; transform: translate(-50%, -50%) scale(1.03); }
   }
 
-  /* Labels */
-  .omni-final-label {
+  /* Holographic HUD Labels */
+  .omni-hud-text {
     position: absolute;
-    font-family: 'Space Grotesk', monospace;
-    font-size: clamp(0.35rem, 0.9vw, 0.55rem);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #66ff88;
-    background: rgba(0,10,0,0.75);
-    border: 1px solid rgba(80,200,80,0.45);
-    padding: 2px 6px;
-    white-space: nowrap;
-    z-index: 5;
+    z-index: 7;
+    text-align: center;
+    width: 100%;
   }
-  .omni-lbl-top    { top: 22%;    left: 50%; transform: translateX(-50%); }
-  .omni-lbl-bottom { bottom: 20%; left: 50%; transform: translateX(-50%); }
 
-  /* Lightning animation keyframes */
-  @keyframes lightFlicker {
-    0%,100%{opacity:0.9} 20%{opacity:0.3} 50%{opacity:1} 70%{opacity:0.4}
+  .omni-hud-welcome {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.5rem, 4vw, 2.4rem);
+    letter-spacing: 3px;
+    color: #ffffff;
+    text-shadow: 0 0 12px #39ff14, 0 0 24px #39ff14;
+    margin: 0;
+    line-height: 1;
   }
-  @keyframes ringRotate    { from{transform:rotate(0deg)}  to{transform:rotate(360deg)}  }
-  @keyframes ringRotateRev { from{transform:rotate(0deg)}  to{transform:rotate(-360deg)} }
+
+  .omni-hud-sub {
+    font-family: 'Space Grotesk', monospace;
+    font-size: clamp(0.45rem, 1vw, 0.65rem);
+    letter-spacing: 2px;
+    color: #39ff14;
+    text-transform: uppercase;
+    margin-top: 4px;
+    text-shadow: 0 0 6px rgba(57, 255, 20, 0.8);
+  }
 
   /* MOBILE: adjust omnitrix for mobile screens */
   @media (max-width: 768px) {
@@ -1305,93 +1318,142 @@
       <!-- OMNITRIX SIGNATURE ELEMENT -->
       <div class="omnitrix-area" id="omnitrixBtn" title="Click to transform">
 
-        <!-- IDLE FLOATING ICON — pixel-perfect Omnitrix -->
-        <svg class="omnitrix-idle" id="omnitrixIdle" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <radialGradient id="hgGrad" cx="50%" cy="50%" r="55%"
-              gradientUnits="userSpaceOnUse" fx="250" fy="250">
-              <stop offset="0%"   stop-color="#d4ff44"/>
-              <stop offset="40%"  stop-color="#8bdc2c"/>
-              <stop offset="100%" stop-color="#4a9a10"/>
-            </radialGradient>
-            <clipPath id="innerDisc">
-              <circle cx="250" cy="250" r="165"/>
-            </clipPath>
-          </defs>
+        <div class="omnitrix-dial" id="omnitrixDial">
+          <!-- IDLE FLOATING ICON — Authentic 3D Omnitrix SVG -->
+          <svg class="omnitrix-idle" id="omnitrixIdle" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="metalBezel" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#4a525d"/>
+                <stop offset="50%" stop-color="#262a30"/>
+                <stop offset="100%" stop-color="#111317"/>
+              </linearGradient>
 
-          <!-- Black background -->
-          <circle cx="250" cy="250" r="250" fill="#000"/>
+              <linearGradient id="latchGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#606875"/>
+                <stop offset="100%" stop-color="#2a2e36"/>
+              </linearGradient>
 
-          <!-- GREY RING with gap cuts every 45° -->
-          <circle cx="250" cy="250" r="210" fill="none" stroke="#6b7585" stroke-width="56"/>
-          <line x1="250" y1="181" x2="250" y2="239" stroke="#000" stroke-width="20" transform="rotate(  0 250 250)"/>
-          <line x1="250" y1="181" x2="250" y2="239" stroke="#000" stroke-width="20" transform="rotate( 45 250 250)"/>
-          <line x1="250" y1="181" x2="250" y2="239" stroke="#000" stroke-width="20" transform="rotate( 90 250 250)"/>
-          <line x1="250" y1="181" x2="250" y2="239" stroke="#000" stroke-width="20" transform="rotate(135 250 250)"/>
-          <line x1="250" y1="181" x2="250" y2="239" stroke="#000" stroke-width="20" transform="rotate(180 250 250)"/>
-          <line x1="250" y1="181" x2="250" y2="239" stroke="#000" stroke-width="20" transform="rotate(225 250 250)"/>
-          <line x1="250" y1="181" x2="250" y2="239" stroke="#000" stroke-width="20" transform="rotate(270 250 250)"/>
-          <line x1="250" y1="181" x2="250" y2="239" stroke="#000" stroke-width="20" transform="rotate(315 250 250)"/>
+              <radialGradient id="hgGrad" cx="50%" cy="50%" r="55%" fx="250" fy="250">
+                <stop offset="0%" stop-color="#e8ff55"/>
+                <stop offset="35%" stop-color="#39ff14"/>
+                <stop offset="100%" stop-color="#058810"/>
+              </radialGradient>
 
-          <!-- GREEN ARC HIGHLIGHTS — 4 alternating segments -->
-          <circle cx="250" cy="250" r="240" fill="none" stroke="#44d044" stroke-width="10"
-            stroke-dasharray="160 1098" stroke-dashoffset="-10" stroke-linecap="round"/>
-          <circle cx="250" cy="250" r="240" fill="none" stroke="#44d044" stroke-width="10"
-            stroke-dasharray="160 1098" stroke-dashoffset="-10" stroke-linecap="round"
-            transform="rotate( 90 250 250)"/>
-          <circle cx="250" cy="250" r="240" fill="none" stroke="#44d044" stroke-width="10"
-            stroke-dasharray="160 1098" stroke-dashoffset="-10" stroke-linecap="round"
-            transform="rotate(180 250 250)"/>
-          <circle cx="250" cy="250" r="240" fill="none" stroke="#44d044" stroke-width="10"
-            stroke-dasharray="160 1098" stroke-dashoffset="-10" stroke-linecap="round"
-            transform="rotate(270 250 250)"/>
+              <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="8" result="blur"/>
+                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+              </filter>
 
-          <!-- INNER BLACK DISC -->
-          <circle cx="250" cy="250" r="182" fill="#000"/>
+              <clipPath id="innerDisc">
+                <circle cx="250" cy="250" r="172"/>
+              </clipPath>
+            </defs>
 
-          <!-- HOURGLASS — sharp bowtie waist matching reference -->
-          <g clip-path="url(#innerDisc)">
-            <path d="M 250,88 C 318,88 400,116 408,152 L 252,249 L 248,249 L 92,152 C 100,116 182,88 250,88 Z"
-              fill="url(#hgGrad)"/>
-            <path d="M 250,412 C 318,412 400,384 408,348 L 252,251 L 248,251 L 92,348 C 100,384 182,412 250,412 Z"
-              fill="url(#hgGrad)"/>
-          </g>
+            <!-- Base Outer Shadow & Outer Ring -->
+            <circle cx="250" cy="250" r="240" fill="#0a0c0e"/>
+            <circle cx="250" cy="250" r="232" fill="url(#metalBezel)" stroke="#58616e" stroke-width="4"/>
 
-          <!-- Animated glow pulse -->
-          <circle cx="250" cy="250" r="185" fill="none" stroke="#44ff44" stroke-width="2" opacity="0">
-            <animate attributeName="opacity" values="0;0.5;0"   dur="2.4s" repeatCount="indefinite"/>
-            <animate attributeName="r"       values="185;196;185" dur="2.4s" repeatCount="indefinite"/>
-          </circle>
-        </svg>
+            <!-- 4 MECHANICAL SIDE RELEASE LATCH BUTTONS -->
+            <rect x="230" y="6" width="40" height="22" rx="4" fill="url(#latchGrad)" stroke="#444b54" stroke-width="2"/>
+            <rect x="242" y="10" width="16" height="6" rx="2" fill="#39ff14" filter="url(#neonGlow)"/>
+            
+            <rect x="230" y="472" width="40" height="22" rx="4" fill="url(#latchGrad)" stroke="#444b54" stroke-width="2"/>
+            <rect x="242" y="484" width="16" height="6" rx="2" fill="#39ff14" filter="url(#neonGlow)"/>
+            
+            <rect x="6" y="230" width="22" height="40" rx="4" fill="url(#latchGrad)" stroke="#444b54" stroke-width="2"/>
+            <rect x="10" y="242" width="6" height="16" rx="2" fill="#39ff14" filter="url(#neonGlow)"/>
+            
+            <rect x="472" y="230" width="22" height="40" rx="4" fill="url(#latchGrad)" stroke="#444b54" stroke-width="2"/>
+            <rect x="484" y="242" width="6" height="16" rx="2" fill="#39ff14" filter="url(#neonGlow)"/>
 
-        <!-- CONTAINED TRANSFORMATION BOX (sits over the idle icon) -->
-        <div class="omni-box" id="omniBox">
-          <div class="omni-box-flash" id="omniFlash"></div>
-          <canvas class="omni-box-lightning" id="omniLightCanvas"></canvas>
+            <!-- 4 GREEN ARC RIM ACCENTS -->
+            <circle cx="250" cy="250" r="226" fill="none" stroke="#39ff14" stroke-width="8"
+              stroke-dasharray="140 1080" stroke-dashoffset="-15" stroke-linecap="round" filter="url(#neonGlow)"/>
+            <circle cx="250" cy="250" r="226" fill="none" stroke="#39ff14" stroke-width="8"
+              stroke-dasharray="140 1080" stroke-dashoffset="-15" stroke-linecap="round"
+              transform="rotate(90 250 250)" filter="url(#neonGlow)"/>
+            <circle cx="250" cy="250" r="226" fill="none" stroke="#39ff14" stroke-width="8"
+              stroke-dasharray="140 1080" stroke-dashoffset="-15" stroke-linecap="round"
+              transform="rotate(180 250 250)" filter="url(#neonGlow)"/>
+            <circle cx="250" cy="250" r="226" fill="none" stroke="#39ff14" stroke-width="8"
+              stroke-dasharray="140 1080" stroke-dashoffset="-15" stroke-linecap="round"
+              transform="rotate(270 250 250)" filter="url(#neonGlow)"/>
 
-          <!-- FINAL STATE: WELCOME -->
-          <div class="omni-box-final" id="omniFinalBox">
-            <!-- Subtle concentric rings backdrop -->
-            <svg style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 200 200">
-              <circle cx="100" cy="100" r="95" fill="none" stroke="rgba(74,255,100,0.18)" stroke-width="1.5"/>
-              <circle cx="100" cy="100" r="78" fill="none" stroke="rgba(74,255,100,0.12)" stroke-width="1"/>
-            </svg>
-            <!-- WELCOME text -->
-            <div style="
-              position: absolute;
-              inset: 0;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              font-family: 'Bebas Neue', sans-serif;
-              font-size: clamp(1.6rem, 4.5vw, 2.8rem);
-              font-weight: 900;
-              color: #000;
-              letter-spacing: 3px;
-              text-align: center;
-              z-index: 5;
-              line-height: 1;
-            ">WELCOME</div>
+            <!-- INNER ROTATING BEZEL RING WITH NOTCHES -->
+            <circle cx="250" cy="250" r="202" fill="none" stroke="#1f2329" stroke-width="40"/>
+            <circle cx="250" cy="250" r="202" fill="none" stroke="#3d4450" stroke-width="4"/>
+            <!-- 8 Grip Notches -->
+            <line x1="250" y1="180" x2="250" y2="224" stroke="#0d0e11" stroke-width="16" transform="rotate(0 250 250)"/>
+            <line x1="250" y1="180" x2="250" y2="224" stroke="#0d0e11" stroke-width="16" transform="rotate(45 250 250)"/>
+            <line x1="250" y1="180" x2="250" y2="224" stroke="#0d0e11" stroke-width="16" transform="rotate(90 250 250)"/>
+            <line x1="250" y1="180" x2="250" y2="224" stroke="#0d0e11" stroke-width="16" transform="rotate(135 250 250)"/>
+            <line x1="250" y1="180" x2="250" y2="224" stroke="#0d0e11" stroke-width="16" transform="rotate(180 250 250)"/>
+            <line x1="250" y1="180" x2="250" y2="224" stroke="#0d0e11" stroke-width="16" transform="rotate(225 250 250)"/>
+            <line x1="250" y1="180" x2="250" y2="224" stroke="#0d0e11" stroke-width="16" transform="rotate(270 250 250)"/>
+            <line x1="250" y1="180" x2="250" y2="224" stroke="#0d0e11" stroke-width="16" transform="rotate(315 250 250)"/>
+
+            <!-- DEEP OBSIDIAN CHAMBER -->
+            <circle cx="250" cy="250" r="172" fill="#040704"/>
+            <circle cx="250" cy="250" r="170" fill="none" stroke="#183618" stroke-width="2"/>
+            <circle cx="250" cy="250" r="164" fill="none" stroke="#0d220d" stroke-width="1.5"/>
+
+            <!-- THE ICONIC GREEN HOURGLASS -->
+            <g clip-path="url(#innerDisc)">
+              <path d="M 250,92 C 322,92 402,120 408,154 L 253,249 L 247,249 L 92,154 C 98,120 178,92 250,92 Z"
+                fill="url(#hgGrad)"/>
+              <path d="M 250,408 C 322,408 402,380 408,346 L 253,251 L 247,251 L 92,346 C 98,380 178,408 250,408 Z"
+                fill="url(#hgGrad)"/>
+            </g>
+
+            <!-- CENTRAL GLOW CORE -->
+            <circle cx="250" cy="250" r="16" fill="#ffffff" filter="url(#neonGlow)"/>
+            <circle cx="250" cy="250" r="8" fill="#e8ff55"/>
+
+            <!-- GLASS LENS SPECULAR REFLECTION -->
+            <path d="M 115,150 A 172,172 0 0,1 385,150 A 168,168 0 0,0 115,150 Z" fill="rgba(255,255,255,0.14)"/>
+
+            <!-- Pulsing Energy Ring -->
+            <circle cx="250" cy="250" r="175" fill="none" stroke="#39ff14" stroke-width="2" opacity="0">
+              <animate attributeName="opacity" values="0;0.6;0" dur="2.2s" repeatCount="indefinite"/>
+              <animate attributeName="r" values="175;188;175" dur="2.2s" repeatCount="indefinite"/>
+            </circle>
+          </svg>
+
+          <!-- CONTAINED TRANSFORMATION BOX (Sits over dial) -->
+          <div class="omni-box" id="omniBox">
+            <div class="omni-box-flash" id="omniFlash"></div>
+            <canvas class="omni-box-lightning" id="omniLightCanvas"></canvas>
+
+            <!-- TRANSFORMED STATE: HOLOGRAPHIC ALIEN MATRIX -->
+            <div class="omni-box-final" id="omniFinalBox">
+              <div class="omni-scanline"></div>
+
+              <!-- ROTATING HUD GRID -->
+              <svg class="omni-hud-grid" viewBox="0 0 300 300">
+                <circle cx="150" cy="150" r="140" fill="none" stroke="rgba(57,255,20,0.3)" stroke-width="1.5" stroke-dasharray="8 6"/>
+                <circle cx="150" cy="150" r="120" fill="none" stroke="rgba(57,255,20,0.2)" stroke-width="1"/>
+                <circle cx="150" cy="150" r="95" fill="none" stroke="rgba(57,255,20,0.25)" stroke-width="1.5" stroke-dasharray="14 10"/>
+                <circle cx="150" cy="150" r="65" fill="none" stroke="rgba(57,255,20,0.15)" stroke-width="1"/>
+                <line x1="150" y1="10" x2="150" y2="290" stroke="rgba(57,255,20,0.15)" stroke-width="1"/>
+                <line x1="10" y1="150" x2="290" y2="150" stroke="rgba(57,255,20,0.15)" stroke-width="1"/>
+              </svg>
+
+              <!-- HOLOGRAPHIC ALIEN / HERO SILHOUETTE -->
+              <svg class="omni-hologram-figure" viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50,15 C56,15 60,20 60,26 C60,33 55,38 50,38 C45,38 40,33 40,26 C40,20 44,15 50,15 Z 
+                         M50,42 C66,42 78,50 82,66 L86,85 L74,88 L72,68 C70,58 62,54 50,54 C38,54 30,58 28,68 L26,88 L14,85 L18,66 C22,50 34,42 50,42 Z
+                         M36,70 L30,125 L44,125 L50,85 L56,125 L70,125 L64,70 Z"
+                      fill="#39ff14" opacity="0.9"/>
+                <polygon points="50,48 54,54 50,60 46,54" fill="#ffffff"/>
+                <circle cx="50" cy="54" r="2" fill="#e8ff55"/>
+              </svg>
+
+              <!-- HUD TEXT OVERLAY -->
+              <div class="omni-hud-text">
+                <h3 class="omni-hud-welcome">WELCOME</h3>
+                <p class="omni-hud-sub">OMNITRIX MATRIX ENGAGED</p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1535,13 +1597,27 @@
     <div class="skill-card">
       <div class="skill-icon">🧠</div>
       <div class="skill-name">Deep Learning</div>
-      <p style="font-size:0.85rem;color:rgba(240,236,228,0.55);line-height:1.6;">Building and training complex neural architectures for vision, language, and tabular tasks.</p>
+      <p style="font-size:0.85rem;color:rgba(240,236,228,0.55);line-height:1.6;">Building and training complex neural architectures for vision, language, and generative tasks.</p>
       <div class="skill-tags">
         <span class="skill-tag">Keras</span>
         <span class="skill-tag">PyTorch</span>
         <span class="skill-tag">TensorFlow</span>
+        <span class="skill-tag">Diffusion Models</span>
+        <span class="skill-tag">GANs</span>
         <span class="skill-tag">CNNs</span>
         <span class="skill-tag">LSTMs</span>
+      </div>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-icon">⚛️</div>
+      <div class="skill-name">Quantum Computing</div>
+      <p style="font-size:0.85rem;color:rgba(240,236,228,0.55);line-height:1.6;">Researching quantum communication protocols, information theory, and circuit simulations.</p>
+      <div class="skill-tags">
+        <span class="skill-tag">Qiskit</span>
+        <span class="skill-tag">Quantum Algorithms</span>
+        <span class="skill-tag">Quantum Gates</span>
+        <span class="skill-tag">EPR & GHZ States</span>
       </div>
     </div>
 
@@ -1572,12 +1648,13 @@
     <div class="skill-card">
       <div class="skill-icon">⚙️</div>
       <div class="skill-name">ML Engineering</div>
-      <p style="font-size:0.85rem;color:rgba(240,236,228,0.55);line-height:1.6;">Deploying models end-to-end with clean pipelines, scalable infra, and interactive dashboards.</p>
+      <p style="font-size:0.85rem;color:rgba(240,236,228,0.55);line-height:1.6;">Deploying models end-to-end with clean pipelines, scalable infra, and math foundations.</p>
       <div class="skill-tags">
         <span class="skill-tag">Scikit-learn</span>
         <span class="skill-tag">Streamlit</span>
         <span class="skill-tag">Oracle OCI</span>
         <span class="skill-tag">MySQL</span>
+        <span class="skill-tag">ML Mathematics</span>
       </div>
     </div>
 
@@ -1650,8 +1727,8 @@
     <div class="project-item">
       <div class="project-num">01</div>
       <div>
-        <div class="project-name">Stock Price Movement Prediction</div>
-        <div class="project-desc">NLP-powered model analyzing financial news sentiment to predict stock price movements using real-time Google News data.</div>
+        <div class="project-name">Aurelius — Stock Price Movement Prediction</div>
+        <div class="project-desc">NLP-powered model analyzing financial news sentiment to predict stock price movements using real-time Google News data. Rebuilt forecasting core on a <strong>Transformer architecture</strong> (replacing LSTM + added conv layers); achieves avg. prediction confidence of <strong>65–85%</strong> on live signals.</div>
       </div>
       <div class="project-badges">
         <span class="project-badge badge-green">NLP</span>
@@ -1664,7 +1741,7 @@
       <div class="project-num">02</div>
       <div>
         <div class="project-name">EstateVision — Property Price Predictor</div>
-        <div class="project-desc">ML-based property price predictor for 40 areas of Indore. Forecasts 5, 7, 10-year price trends — R² = 0.94, 90%+ classification accuracy.</div>
+        <div class="project-desc">ML-based property price predictor for 40 areas of Indore. Forecasts 5, 7, 10-year price trends — <strong>R² = 0.94</strong>, Test MSE = 0.1928, and <strong>90%+ classification accuracy</strong> in predicting growth categories.</div>
       </div>
       <div class="project-badges">
         <span class="project-badge badge-pink">Regression</span>
@@ -1676,7 +1753,7 @@
       <div class="project-num">03</div>
       <div>
         <div class="project-name">CrediCoach — Credit Risk Predictor</div>
-        <div class="project-desc">Hybrid ensemble (Random Forest + XGBoost + Keras NN) trained on 2000+ records. Integrates Google Gemini API for AI-driven credit risk explanations.</div>
+        <div class="project-desc">Hybrid ensemble of Random Forest, XGBoost &amp; Keras NN trained on <strong>2000+ records</strong> with <strong>92% regression accuracy</strong>. Integrates Google Gemini API to provide intelligent, explainable credit risk breakdowns.</div>
       </div>
       <div class="project-badges">
         <span class="project-badge badge-cyan">Ensemble</span>
@@ -1697,11 +1774,19 @@
     <div class="reveal">
       <h3 class="exp-section-title">EXPERIENCE</h3>
       <div class="exp-item">
-        <div class="exp-date">Oct 2024 — Present</div>
-        <div class="exp-role">Member</div>
-        <div class="exp-company">Google Developer's Group · BIT Jaipur</div>
+        <div class="exp-date">Aug 2026 — Present</div>
+        <div class="exp-role">Intern (Part-time)</div>
+        <div class="exp-company">ENGN-F1 · Remote</div>
         <ul class="exp-bullets">
-          <li>Community development & promoting Google Technologies among peers</li>
+          <li>Working on machine learning engineering and software development</li>
+        </ul>
+      </div>
+      <div class="exp-item">
+        <div class="exp-date">May 2026 — Jun 2026</div>
+        <div class="exp-role">Research Intern (Quantum Communication)</div>
+        <div class="exp-company">Indian Institute of Technology Guwahati</div>
+        <ul class="exp-bullets">
+          <li>Researched quantum communication protocols, qubits, and implemented Qiskit/Python simulations under Prof. Dr. Lokesh Sharma</li>
         </ul>
       </div>
       <div class="exp-item">
@@ -1715,14 +1800,28 @@
     </div>
 
     <div class="reveal">
-      <h3 class="exp-section-title">OPEN<br>SOURCE</h3>
-      <div style="background:#141414;padding:36px;border:1px solid rgba(255,255,255,0.06);">
-        <p style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:12px;">GirlScript Summer of Code</p>
-        <p style="font-size:0.85rem;color:rgba(240,236,228,0.55);line-height:1.7;">Active contributor to one of India's largest open source programs — building real-world tools and collaborating with developers nationwide.</p>
-        <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;">
-          <span class="project-badge badge-green">Open Source</span>
-          <span class="project-badge badge-yellow">GSSOC '25</span>
-        </div>
+      <h3 class="exp-section-title">OTHER<br>POSITIONS</h3>
+      <div class="exp-item">
+        <div class="exp-date">Oct. 2026 — Present</div>
+        <div class="exp-role">Senior Advisor | <span style="font-family:'Syne',sans-serif;font-weight:700;">IZAR</span></div>
+        <div class="exp-company">Astronomy Club of BIT Jaipur</div>
+        <ul class="exp-bullets">
+          <li>Advising club activities and initiatives centered around astronomy and space sciences.</li>
+        </ul>
+      </div>
+      <div class="exp-item">
+        <div class="exp-date">Oct. 2024 — Present</div>
+        <div class="exp-role">Member | <span style="font-family:'Syne',sans-serif;font-weight:700;">Google Developer's Group</span></div>
+        <div class="exp-company">Birla Institute of Technology Jaipur</div>
+        <ul class="exp-bullets">
+          <li>Involved in community development and promoting Google Technologies among peers.</li>
+        </ul>
+      </div>
+      <div class="exp-item">
+        <div class="exp-role">Curation Lead | <span style="font-family:'Syne',sans-serif;font-weight:700;">TEDx BIT Jaipur</span></div>
+        <ul class="exp-bullets">
+          <li>Curating speaker lineups and content themes to bring impactful ideas to the TEDx BIT Jaipur stage.</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -1755,8 +1854,6 @@
       </div>
     </div>
   </div>
-</section>
-
 
 <!-- ============ MY CORE ============ -->
 <section id="core" style="padding:120px 48px;position:relative;overflow:hidden;background:#0d0d0d;">
@@ -1794,22 +1891,6 @@
       <p style="font-size:0.85rem;color:rgba(240,236,228,0.45);line-height:1.6;">Poetry is my way of training a model on the human soul — finding the patterns language can't compute.</p>
     </div>
 
-    <!-- BUILDING AI card -->
-    <div class="core-card" style="background:#141414;border:1px solid rgba(255,255,255,0.06);padding:40px;position:relative;overflow:hidden;transition:transform 0.3s,background 0.3s;cursor:default;" onmouseenter="this.style.transform='translateY(-6px)';this.style.background='#1a1a1a'" onmouseleave="this.style.transform='translateY(0)';this.style.background='#141414'">
-      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent-green);"></div>
-      <div style="font-size:0.7rem;letter-spacing:4px;text-transform:uppercase;color:var(--accent-green);margin-bottom:16px;font-weight:600;">🤖 Building AI</div>
-      <h3 style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;margin-bottom:16px;">Obsessed with Machines That Think</h3>
-      <p style="font-size:0.85rem;color:rgba(240,236,228,0.55);line-height:1.7;">I explore intelligence through mathematics and intuition — visualizing learning curves, understanding optimization landscapes, and crafting models that transform data into insight. For me, AI is not just engineering; it is understanding how machines learn to perceive the world.</p>
-    </div>
-
-    <!-- OPEN SOURCE card -->
-    <div class="core-card" style="background:#141414;border:1px solid rgba(255,255,255,0.06);padding:40px;position:relative;overflow:hidden;transition:transform 0.3s,background 0.3s;cursor:default;" onmouseenter="this.style.transform='translateY(-6px)';this.style.background='#1a1a1a'" onmouseleave="this.style.transform='translateY(0)';this.style.background='#141414'">
-      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent-pink);"></div>
-      <div style="font-size:0.7rem;letter-spacing:4px;text-transform:uppercase;color:var(--accent-pink);margin-bottom:16px;font-weight:600;">🌐 Community & OSS</div>
-      <h3 style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;margin-bottom:16px;">Giving Back to the Code</h3>
-      <p style="font-size:0.85rem;color:rgba(240,236,228,0.55);line-height:1.7;">I believe technology grows through shared knowledge. Contributing to open ecosystems, exchanging ideas with developers, and building in public allows innovation to compound beyond individuals into communities.</p>
-    </div>
-
   </div>
 </section>
 
@@ -1841,27 +1922,22 @@
 
 <script>
   // ============ OMNITRIX CONTAINED TRANSFORMATION ============
-  const omnitrixBtn  = document.getElementById('omnitrixBtn');
-  const omnitrixIdle = document.getElementById('omnitrixIdle');
-  const omniBox      = document.getElementById('omniBox');
-  const omniFlash    = document.getElementById('omniFlash');
-  const lightCanvas  = document.getElementById('omniLightCanvas');
-  const omniFinalBox = document.getElementById('omniFinalBox');
-  const omniHint     = document.getElementById('omniHint');
+  const omnitrixBtn   = document.getElementById('omnitrixBtn');
+  const omniFlash     = document.getElementById('omniFlash');
+  const lightCanvas   = document.getElementById('omniLightCanvas');
+  const omniHint      = document.getElementById('omniHint');
 
   let transformed = false;
   let lightAnim   = null;
   let lctx        = null;
 
-  // Size the lightning canvas to match the box
   function sizeCanvas() {
-    if (!lightCanvas) return;
-    lightCanvas.width  = omniBox.offsetWidth  || 240;
-    lightCanvas.height = omniBox.offsetHeight || 240;
+    if (!lightCanvas || !omnitrixBtn) return;
+    lightCanvas.width  = omnitrixBtn.offsetWidth  || 260;
+    lightCanvas.height = omnitrixBtn.offsetHeight || 260;
     lctx = lightCanvas.getContext('2d');
   }
 
-  // Draw a jagged lightning bolt between two points
   function drawBolt(ctx, x1, y1, x2, y2, roughness) {
     const dx = x2 - x1, dy = y2 - y1;
     const len = Math.sqrt(dx * dx + dy * dy);
@@ -1885,36 +1961,31 @@
     const w = lightCanvas.width, h = lightCanvas.height;
     const cx = w / 2, cy = h / 2;
     lctx.clearRect(0, 0, w, h);
+    if (Math.random() < 0.3) return;
 
-    // Randomise which bolts fire each frame (flicker effect)
-    if (Math.random() < 0.35) return;
-
-    // Outer glow pass
     lctx.shadowBlur  = 12;
-    lctx.shadowColor = '#44ff88';
-    lctx.strokeStyle = 'rgba(100,255,120,0.45)';
+    lctx.shadowColor = '#39ff14';
+    lctx.strokeStyle = 'rgba(57,255,20,0.65)';
     lctx.lineWidth   = 3;
     const angles = [30, 80, 150, 210, 280, 340];
     angles.forEach(deg => {
-      if (Math.random() < 0.5) return;
+      if (Math.random() < 0.4) return;
       const rad = deg * Math.PI / 180;
       const ex  = cx + Math.cos(rad) * w * 0.52;
       const ey  = cy + Math.sin(rad) * h * 0.52;
-      drawBolt(lctx, cx, cy, ex, ey, 22);
+      drawBolt(lctx, cx, cy, ex, ey, 20);
     });
 
-    // Sharp core pass
     lctx.shadowBlur  = 4;
-    lctx.strokeStyle = 'rgba(200,255,200,0.85)';
-    lctx.lineWidth   = 1;
+    lctx.strokeStyle = 'rgba(235,255,200,0.9)';
+    lctx.lineWidth   = 1.5;
     angles.forEach(deg => {
-      if (Math.random() < 0.4) return;
+      if (Math.random() < 0.35) return;
       const rad = deg * Math.PI / 180;
       const ex  = cx + Math.cos(rad) * w * 0.45;
       const ey  = cy + Math.sin(rad) * h * 0.45;
-      drawBolt(lctx, cx, cy, ex, ey, 14);
+      drawBolt(lctx, cx, cy, ex, ey, 12);
     });
-
     lctx.shadowBlur = 0;
   }
 
@@ -1925,69 +1996,45 @@
   }
 
   function stopLightning() {
-    cancelAnimationFrame(lightAnim);
+    if (lightAnim) cancelAnimationFrame(lightAnim);
     lightAnim = null;
     if (lctx) lctx.clearRect(0, 0, lightCanvas.width, lightCanvas.height);
     lightCanvas.style.opacity = '0';
   }
 
-  function resetToIdle() {
-    transformed = false;
-    omniFlash.style.transition    = 'none';
-    omniFlash.style.opacity       = '0';
-    omniFinalBox.style.transition = 'none';
-    omniFinalBox.style.opacity    = '0';
-    stopLightning();
-    omnitrixIdle.style.opacity    = '1';
-    omniHint.style.opacity        = '1';
-    omniHint.textContent          = '[ tap to transform ]';
-  }
+  function runTransformation() {
+    if (transformed) {
+      // Smooth Revert Sequence
+      transformed = false;
+      omnitrixBtn.classList.remove('is-transformed');
+      omniFlash.style.opacity = '0';
+      stopLightning();
+      omniHint.textContent = '[ tap to transform ]';
+      return;
+    }
 
-  async function runTransformation() {
-    if (transformed) { resetToIdle(); return; }
+    // Smooth Transformation Activation
     transformed = true;
     sizeCanvas();
-    omniHint.style.opacity = '0';
+    omnitrixBtn.classList.add('is-transformed');
 
-    // ── Phase 1: Green FLASH (fast) ──
-    omniFlash.style.transition = 'opacity 0.05s';
-    omniFlash.style.opacity    = '1';
-
-    // ── Phase 2: Lightning starts immediately ──
+    // Energy Burst Flash Effect
+    omniFlash.style.opacity = '0.9';
     startLightning();
 
-    // ── Hold flash + lightning for ~350ms ──
-    await new Promise(r => setTimeout(r, 180));
-
-    // Flash flicker
-    omniFlash.style.transition = 'opacity 0.08s';
-    omniFlash.style.opacity    = '0.3';
-    await new Promise(r => setTimeout(r, 80));
-    omniFlash.style.opacity    = '1';
-    await new Promise(r => setTimeout(r, 80));
-
-    // ── Phase 3: Flash out, idle icon fades, final appears ──
-    omniFlash.style.transition     = 'opacity 0.25s';
-    omniFlash.style.opacity        = '0';
-    omnitrixIdle.style.transition  = 'opacity 0.2s';
-    omnitrixIdle.style.opacity     = '0';
-
-    await new Promise(r => setTimeout(r, 200));
-    stopLightning();
-
-    // Show final state
-    omniFinalBox.style.transition = 'opacity 0.3s ease';
-    omniFinalBox.style.opacity    = '1';
-
-    // Update hint
     setTimeout(() => {
-      omniHint.style.opacity    = '1';
-      omniHint.style.transition = 'opacity 0.4s';
-      omniHint.textContent      = '[ tap to revert ]';
-    }, 400);
+      omniFlash.style.opacity = '0';
+    }, 280);
+
+    setTimeout(() => {
+      stopLightning();
+      omniHint.textContent = '[ tap to revert ]';
+    }, 600);
   }
 
-  omnitrixBtn.addEventListener('click', runTransformation);
+  if (omnitrixBtn) {
+    omnitrixBtn.addEventListener('click', runTransformation);
+  }
 </script>
 
 <script>
