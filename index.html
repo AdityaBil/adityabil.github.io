@@ -906,9 +906,9 @@
   @media (max-width: 1024px) {
     .skills-grid { grid-template-columns: repeat(2, 1fr); }
     .exp-grid { grid-template-columns: 1fr; }
+    .exp-section-title { font-size: clamp(1.2rem, 5vw, 56px); }
   }
 
-  /* MOBILE (< 768px) */
   @media (max-width: 768px) {
     .hamburger {
       display: flex;
@@ -957,10 +957,46 @@
     .project-badges { 
       display: none !important; 
     }
+
+    /* project descriptions — ensure bold text wraps cleanly */
+    .project-desc {
+      font-size: clamp(0.78rem, 2.5vw, 0.9rem);
+      line-height: 1.65;
+    }
+    .project-desc strong {
+      display: inline;
+    }
     
     .exp-grid { 
       grid-template-columns: 1fr; 
       gap: clamp(30px, 8vw, 60px);
+    }
+
+    /* Reduce hard-coded row margins on mobile */
+    .exp-grid[style*="margin-top"] {
+      margin-top: clamp(40px, 10vw, 60px) !important;
+    }
+
+    /* Exp & cert sizing on mobile */
+    .exp-section-title {
+      font-size: clamp(1.4rem, 6vw, 2.5rem);
+      margin-bottom: clamp(16px, 4vw, 28px);
+    }
+
+    .exp-role {
+      font-size: clamp(0.9rem, 2.8vw, 1.1rem);
+    }
+
+    .cert-item {
+      padding: clamp(12px, 3vw, 18px) clamp(12px, 3vw, 20px);
+    }
+
+    .cert-name {
+      font-size: clamp(0.82rem, 2.5vw, 1rem);
+    }
+
+    .cert-issuer {
+      font-size: clamp(0.68rem, 2vw, 0.8rem);
     }
     
     .s1, .s2, .s3, .s4, .s5, .s6 { 
@@ -1827,7 +1863,7 @@
   </div>
 
   <!-- ROW 2: EDUCATION + CERTIFICATIONS -->
-  <div class="exp-grid" style="margin-top: 80px;">
+  <div class="exp-grid" style="margin-top: clamp(40px, 10vw, 80px);">
     <div class="reveal">
       <h3 class="exp-section-title">EDUCATION</h3>
       <div class="exp-item">
@@ -1856,7 +1892,7 @@
   </div>
 
 <!-- ============ MY CORE ============ -->
-<section id="core" style="padding:120px 48px;position:relative;overflow:hidden;background:#0d0d0d;">
+<section id="core" style="padding:clamp(60px,12vw,120px) clamp(16px,5vw,48px);position:relative;overflow:hidden;background:#0d0d0d;">
   <div class="grid-bg"></div>
   <div class="bg-blob" style="width:500px;height:500px;background:var(--accent-purple);top:-150px;right:-100px;opacity:0.05;"></div>
   <p class="section-label reveal">— beyond the code</p>
