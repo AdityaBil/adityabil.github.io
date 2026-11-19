@@ -346,6 +346,10 @@ body.menu-open .mobile-menu{visibility:visible;transform:none}
 .tli h3 span{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:400}
 .tli__org{margin-top:5px;font-family:var(--mono);font-size:.63rem;letter-spacing:.05em;color:rgba(200,241,105,.7)}
 .tli p.body{margin-top:11px;font-size:.85rem;line-height:1.72;color:var(--muted);max-width:62ch}
+.tli__bullets{margin-top:11px;display:flex;flex-direction:column;gap:8px}
+.tli__bullets li{position:relative;padding-left:18px;font-size:.85rem;line-height:1.72;color:var(--muted);max-width:64ch}
+.tli__bullets li::before{content:"";position:absolute;left:0;top:.58em;width:4px;height:4px;background:var(--lime);border-radius:1px;opacity:.85}
+.tli strong, .tli__bullets strong{color:var(--paper);font-weight:500}
 .panels{display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,2.6vw,28px);margin-top:clamp(36px,5vw,56px)}
 .panel{border:1px solid var(--line);border-radius:18px;padding:clamp(22px,3vw,32px);background:var(--ink-2)}
 .panel h3{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
@@ -379,8 +383,33 @@ body.menu-open .mobile-menu{visibility:visible;transform:none}
 .creative .mono{font-size:.58rem;letter-spacing:.18em;color:var(--dim)}
 .creative h3{font-family:var(--serif);font-size:clamp(1.8rem,3vw,2.3rem);margin-top:14px;letter-spacing:-.01em}
 .creative blockquote{margin:18px 0 0;font-family:var(--serif);font-style:italic;font-size:clamp(1.1rem,1.7vw,1.32rem);line-height:1.5;color:var(--paper);max-width:34ch}
-.creative p{margin-top:16px;font-size:.82rem;line-height:1.75;color:var(--muted);max-width:40ch}
-.creative .glyph{position:absolute;right:26px;bottom:22px;width:64px;height:64px;opacity:.5}
+.creative p{margin-top:16px;font-size:.82rem;line-height:1.75;color:var(--muted);max-width:38ch}
+.creative .glyph{display:none}
+.creative__icon{
+  position:absolute;right:26px;bottom:24px;z-index:2;
+  transition:transform .4s var(--ease),border-color .3s,box-shadow .4s,filter .4s;
+  pointer-events:none;
+}
+.creative__icon--headphone{
+  width:96px;height:96px;object-fit:contain;
+  filter:drop-shadow(0 10px 22px rgba(0,0,0,.7));
+  transform:rotate(-6deg);
+}
+.creative:hover .creative__icon--headphone{
+  transform:translateY(-4px) rotate(-2deg) scale(1.06);
+  filter:drop-shadow(0 16px 28px rgba(0,0,0,.85));
+}
+.creative__icon--pen{
+  width:82px;height:124px;object-fit:cover;object-position:center;
+  border-radius:12px;border:1px solid var(--line-2);
+  box-shadow:0 12px 24px -6px rgba(0,0,0,.75);
+  transform:rotate(3deg);
+}
+.creative:hover .creative__icon--pen{
+  transform:translateY(-4px) rotate(0deg) scale(1.05);
+  border-color:var(--lime);
+  box-shadow:0 18px 32px -6px rgba(0,0,0,.9), 0 0 0 1px rgba(200,241,105,.25);
+}
 
 /* contact */
 .contact{padding-block:clamp(84px,12vw,150px) clamp(56px,7vw,84px)}
@@ -481,6 +510,9 @@ footer{border-top:1px solid var(--line);padding:22px var(--pad)}
   .hero__acts{gap:8px}
   .clink .l{width:70px}
   .clink .v{font-size:.78rem}
+  .creative__icon--headphone{width:74px;height:74px;right:16px;bottom:16px}
+  .creative__icon--pen{width:64px;height:98px;right:16px;bottom:16px}
+  .creative p{max-width:28ch}
   .footer__in{font-size:.54rem}
 }
 </style>
@@ -544,7 +576,7 @@ footer{border-top:1px solid var(--line);padding:22px var(--pad)}
           </a>
           <a class="btn btn--ghost" href="#contact">Get in touch</a>
         </div>
-        <p class="hero__note"><span class="pulse" aria-hidden="true"></span> Currently interning at ENGN-F1 <span class="sep">/</span> B.Tech CS · BIT Jaipur</p>
+        <p class="hero__note"><span class="pulse" aria-hidden="true"></span> Currently interning at Zoolarity Labs <span class="sep">/</span> B.Tech CS · BIT Jaipur</p>
       </div>
 
       <div class="hero__figure">
@@ -832,14 +864,28 @@ footer{border-top:1px solid var(--line);padding:22px var(--pad)}
 
       <ol class="timeline">
         <li class="tli reveal">
-          <div class="tli__when">Aug 2026 — Present</div>
+          <div class="tli__when">Oct 2026 — Nov 2026</div>
           <div>
-            <h3>Intern <span>Part-time · Remote</span></h3>
-            <p class="tli__org">ENGN-F1</p>
-            <p class="body">Working on machine learning engineering and applied software development — contributing to production-facing systems while finishing my degree.</p>
+            <h3>AI Intern</h3>
+            <p class="tli__org">Zoolarity Labs</p>
+            <ul class="tli__bullets">
+              <li>Working as an <strong>AI Intern</strong> at <strong>Zoolarity Labs</strong>, building <strong>AI automation</strong> solutions across multiple projects.</li>
+              <li>Contributing to <strong>finance-focused projects</strong>, applying AI to financial use cases.</li>
+            </ul>
           </div>
         </li>
         <li class="tli reveal" style="--d:60ms">
+          <div class="tli__when">Aug 2026 — Oct 2026</div>
+          <div>
+            <h3>Research Intern <span>Technical Research</span></h3>
+            <p class="tli__org">ENGN-F1 (Startup)</p>
+            <ul class="tli__bullets">
+              <li>Working as a <strong>Research Intern</strong> at <strong>ENGN-F1</strong>, a startup building an experience-driven computing paradigm powered by real-time operational intelligence.</li>
+              <li>Contributing to the <strong>technical research</strong> track, exploring real-time detection, layered autonomy, and localized execution frameworks.</li>
+            </ul>
+          </div>
+        </li>
+        <li class="tli reveal" style="--d:120ms">
           <div class="tli__when">May 2026 — Jun 2026</div>
           <div>
             <h3>Research Intern <span>Quantum Communication</span></h3>
@@ -847,7 +893,7 @@ footer{border-top:1px solid var(--line);padding:22px var(--pad)}
             <p class="body">Researched quantum communication protocols and qubit behaviour, implementing circuit simulations in Qiskit and Python to study entanglement-based protocols including EPR and GHZ states.</p>
           </div>
         </li>
-        <li class="tli reveal" style="--d:120ms">
+        <li class="tli reveal" style="--d:180ms">
           <div class="tli__when">Sep 2025 — Dec 2025</div>
           <div>
             <h3>Tech Contributor <span>GSSOC&rsquo;25</span></h3>
@@ -920,11 +966,7 @@ footer{border-top:1px solid var(--line);padding:22px var(--pad)}
           <h3>Rapping</h3>
           <blockquote>“I weave words into magnificent lines that make up a verse — and the beat goes fine.”</blockquote>
           <p>Rhythm, wordplay and timing, practised the same way I approach models: iterate, listen, cut what doesn&rsquo;t hit.</p>
-          <svg class="glyph" viewBox="0 0 64 64" fill="none" aria-hidden="true">
-            <g stroke="#C8F169" stroke-width="1.4" stroke-linecap="round">
-              <path d="M6 32v0M12 24v16M18 18v28M24 26v12M30 12v40M36 22v20M42 16v32M48 28v8M54 23v18M60 32v0"/>
-            </g>
-          </svg>
+          <img class="creative__icon creative__icon--headphone" src="headphone_icon.png" alt="Headphones icon" width="96" height="96" loading="lazy" decoding="async">
         </article>
 
         <article class="creative reveal" style="--d:80ms">
@@ -932,10 +974,7 @@ footer{border-top:1px solid var(--line);padding:22px var(--pad)}
           <h3>Writing &amp; poetry</h3>
           <blockquote>“Poetry is how I train a model on the human soul — finding the patterns language can&rsquo;t compute.”</blockquote>
           <p>Long-form writing and verse about ambition, doubt and the quiet parts of being alive. The opposite of a benchmark.</p>
-          <svg class="glyph" viewBox="0 0 64 64" fill="none" aria-hidden="true">
-            <path d="M10 46c6-14 10-22 14-24s6 4 2 12-8 16-4 18 10-8 14-12 8-4 8 0" stroke="#C8F169" stroke-width="1.4" stroke-linecap="round"/>
-            <circle cx="52" cy="16" r="3" stroke="#C8F169" stroke-width="1.4"/>
-          </svg>
+          <img class="creative__icon creative__icon--pen" src="pen_icon.jpg" alt="Writing quill pen icon" width="82" height="124" loading="lazy" decoding="async">
         </article>
       </div>
     </div>
